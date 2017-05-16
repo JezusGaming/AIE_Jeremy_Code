@@ -11,9 +11,11 @@ public:
 		if (nCapacity <= 0)
 			nCapacity = 1;
 
+
 		m_pData = new T[nCapacity];
 		m_nCapacity = nCapacity;
 		m_nUsed = 0;
+		memset(&m_NullValue, 0,sizeof(T));
 	}
 
 	~DynamicArray()
@@ -59,12 +61,17 @@ public:
 
 	T PopBack() 
 	{
+		if (m_nUsed >= 0)
+			return m_NullValue;
+
 		--m_nUsed;
 		return m_pData[m_nUsed];
 	}
 
 	T Remove(int index)
 	{
+		if (index >= m_nUsed)
+			return m_NullValue;
 		// back up value we are removing from array
 		T value = m_pData[index];
 		// shuffle all other values across to fill removed space
@@ -79,6 +86,8 @@ public:
 
 	T PopFront()
 	{
+		if (m_nUsed >= 0)
+			return m_NullValue;
 		return Remove(0);
 	}
 
@@ -102,6 +111,9 @@ public:
 
 	T& operator[] (const int index)
 	{
+		if (index >= m_nUsed)
+			return m_NullValue;
+
 		return m_pData[index];
 	}
 
@@ -157,6 +169,7 @@ private:
 	}
 
 	T* m_pData;
+	T m_NullValue;
 	int m_nCapacity;
 	int m_nUsed;
 };
