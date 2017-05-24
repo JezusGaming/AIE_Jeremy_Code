@@ -48,6 +48,9 @@ public:
 
 	void Insert(int index, T value)
 	{
+		if (index > m_nUsed)
+			return;
+
 		if (m_nUsed >= m_nCapacity)
 			Resize();
 		memcpy(m_pData + index + 1, m_pData + index, sizeof(T) * (m_nUsed - index));

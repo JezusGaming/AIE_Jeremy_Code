@@ -1,5 +1,7 @@
 #include <iostream>
 #include "DynamicArray.h"
+#include "ObjectPool.h"
+
 using namespace std;
 void main()
 {
@@ -68,6 +70,12 @@ void main()
 	myArray.Shrink();
 	cout << "Used " << myArray.Size() << endl;
 	cout << "Capacity " << myArray.Capacity() << endl;
+
+	ObjectPool pool(50);
+
+	Entity* p = pool.Allocate();
+
+	pool.Deallocate(p);
 
 	system("pause");
 }
