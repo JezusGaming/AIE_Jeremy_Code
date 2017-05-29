@@ -4,7 +4,7 @@
 template<typename T>
 class Stack
 {
-
+public:
 	Stack(int initialSize = 0)
 	{
 		m_pData = new DynamicArray<T>(initialSize);
@@ -40,6 +40,7 @@ class Stack
 		int nTop = m_pData->Size() - 1;
 		return m_pData[nTop];
 	}
-
+	
+private:
 	DynamicArray<T>* m_pData;
 };

@@ -7,7 +7,7 @@ public:
 	ListNode() {};
 	~ListNode() {};
 	
-	T data;
+	T m_pData;
 	ListNode* next;
 	ListNode* prev;
 };
