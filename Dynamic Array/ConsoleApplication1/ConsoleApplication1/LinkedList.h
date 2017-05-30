@@ -1,144 +1,206 @@
 #pragma once
 #include "ListNode.h"
-
-template<typename T>
+template <typename T>
 class LinkedList
 {
 public:
-	LinkedList(int initialSize = 0)
+
+	LinkedList()
 	{
-		/*int nCapacity = initialSize;
-		if (nCapacity <= 0)
-			nCapacity = 1;
-
-
-		m_pData = new T[nCapacity];
-		m_nCapacity = nCapacity;
-		m_nUsed = 0;
-		memset(&m_NullValue, 0, sizeof(T));*/
+		start = new ListNode<T>();
+		end = new ListNode<T>();
+		start->next = end;
+		start->prev = nullptr;
+		end->next = nullptr;
+		end->prev = start;
 	}
 
-	~LinkedList() 
+	~LinkedList()
 	{
-		/*delete m_pData;*/
+		delete start;
+		delete end;
+
 	}
 
-	void PushFront(T data)
+	void insert(T value, ListNode<T>* prev, ListNode<T>* next)
 	{
-		/*Insert(0, value);*/
+		ListNode<T>* n1 = new ListNode<T>();
+		n1->data = value;
+		n1->next = next;
+		prev->next = n1;
+		next->prev = n1;
+		n1->prev = prev;
+		++nodeCount;
 	}
 
 	void PushBack(T value)
 	{
-		/*if (m_nUsed >= m_nCapacity)
-			Resize();
-
-		m_pData[m_nUsed] = value;
-		++m_nUsed;*/
+		insert(value, end->prev, end);
 	}
 
-	void Insert(int index, T value)
+	void PushFront(T value)
 	{
-		//if (index > m_nUsed)
-		//	return;
-
-		//if (m_nUsed >= m_nCapacity)
-		//	Resize();
-		//memcpy(m_pData + index + 1, m_pData + index, sizeof(T) * (m_nUsed - index));
-		////for (int i = m_nUsed - 1; i >= index; --i)
-		////{
-		////	m_pData[i + 1] = m_pData[i];
-		////}
-		//m_pData[index] = value;
-		//++m_nUsed;
+		insert(value, start, start->next);
 	}
 
-	void Begin()
+	void IndexInsert(int index, T value)
 	{
-
+		ListNode<T>* current = start;
+		for (int i = 0; i < index; ++i)
+		{
+			if (current->next == end)
+			{
+				cout << "Invalid index location!" << endl;
+				return;
+			}
+			current = current->next;
+		}
+		insert(value, current, current->next);
 	}
 
-	void End()
+	T First()
 	{
-
+		if (start->next == end)
+		{
+			cout << "This list is empty!" << endl;
+			return default;
+		}
+		else
+		{
+			T value = start->next->data;
+			return value;
+		}
 	}
 
-	void First()
+	T Last()
 	{
-
-	}
-
-	void Last()
-	{
-
-	}
-
-	void Count()
-	{
-
-	}
-
-	void Erase()
-	{
-
-	}
-
-	T Remove()
-	{
-		//if (index >= m_nUsed)
-		//	return m_NullValue;
-		//// back up value we are removing from array
-		//T value = m_pData[index];
-		//// shuffle all other values across to fill removed space
-		//for (int i = index; i < m_nUsed; ++i)
-		//{
-		//	m_pData[i] = m_pData[i + 1];
-		//}
-		//--m_nUsed;
-		//// return removed value
-		//return value;
-	}
-
-	T PopBack()
-	{
-		/*if (m_nUsed >= 0)
-			return m_NullValue;
-
-		--m_nUsed;
-		return m_pData[m_nUsed];*/
-	}
-
-	T PopFront()
-	{
-		/*if (m_nUsed >= 0)
-			return m_NullValue;
-		return Remove(0);*/
-	}
-
-	void Empty()
-	{
-
-	}
-
-	void Clear()
-	{
-		/*m_nUsed = 0;*/
+		if (start->next == end)
+		{
+			cout << "This list is empty!" << endl;
+			return default;
+		}
+		else
+		{
+			T value = end->prev->data;
+			return value;
+		}
 	}
 
 	int Size()
 	{
-		/*return m_nUsed;*/
+		return nodeCount;
 	}
 
-	int Capacity()
+	bool empty()
 	{
-		/*return m_nCapacity;*/
+		if (start->next == end)
+			return true;
+		else
+			return false;
 	}
-private:
+
+	T popBack()
+	{
+		ListNode<T>* n = end->prev;
+		T tempData = n->data;
+		if (n != start)
+		{
+			n->prev->next = end;
+			end->prev = n->prev;
+			delete n;
+			--nodeCount;
+			return tempData;
+		}
+		else
+			return default;
+
+
+	}
+
+	T popFront()
+	{
+		ListNode<T>* n = start->next;
+		T tempData = n->data;
+		if (n != end)
+		{
+			n->next->prev = start;
+			start->next = n->next;
+			delete n;
+			--nodeCount;
+			return tempData;
+		}
+		else
+			return default;
+
+	}
+
+	void clear()
+	{
+		while (start->next != end)
+			popBack();
+	}
+
+	void erase(int index)
+	{
+		ListNode<T>* current = start;
+		for (int i = 0; i < index; ++i)
+		{
+			if (current->next == end)
+			{
+				cout << "Invalid index location!" << endl;
+				return;
+			}
+			current = current->next;
+		}
+		if (current == start || current == end)
+		{
+			cout << "Cannot delete start and end!" << endl;
+			return;
+		}
+		current->next->prev = current->prev;
+		current->prev->next = current->next;
+		delete current;
+		--nodeCount;
+	}
+
+	void remove(T value)
+	{
+		ListNode<T>* temp = nullptr;
+		ListNode<T>* current = start->next;
+		while (current->next != end)
+		{
+			if (current->next == end)
+			{
+				cout << "Invalid index location!" << endl;
+				return;
+			}
+			if (current->data == value)
+			{
+				temp = current->prev;
+				current->next->prev = current->prev;
+				current->prev->next = current->next;
+				delete current;
+				current = temp;
+				--nodeCount;
+			}
+			current = current->next;
+		}
+	}
+
+	void printList()
+	{
+		ListNode<T>* current = start->next;
+		while (current->next != end)
+		{
+			cout << current->data << endl;
+			current = current->next;
+		}
+	}
+
+
+	int nodeCount = 0;
 	ListNode<T>* start;
 	ListNode<T>* end;
-	/*T m_NullValue;
-	int m_nCapacity;
-	int m_nUsed;*/
+	T default;
 };
 
