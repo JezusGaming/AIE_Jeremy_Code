@@ -19,7 +19,7 @@ ObjectPool::~ObjectPool()
 	delete[] m_pPool;
 }
 
-Entity * ObjectPool::Allocate()
+Entity* ObjectPool::Allocate()
 {
 	for (int i = 0; i < m_nMaxSize; ++i)
 	{
