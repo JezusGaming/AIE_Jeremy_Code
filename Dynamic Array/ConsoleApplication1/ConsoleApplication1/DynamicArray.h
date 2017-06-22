@@ -1,5 +1,6 @@
 #pragma once
 #include <memory.h>
+#include <crtdbg.h>
 
 template<typename T>
 class DynamicArray
@@ -28,8 +29,9 @@ public:
 		m_nCapacity = other.m_nCapacity;
 		m_nUsed = other.m_nUsed;
 
+		_ASSERT(m_pData);
 		m_pData = new T[m_nCapacity];
-		memcpy(m_pData, other.m_pData, sizeof(T) * m_nCapacity);
+		memcpy(m_pData, other.m_pData, sizeof(T) * other.m_nCapacity);
 	}
 
 	void PushBack(T value) 
@@ -64,8 +66,8 @@ public:
 
 	T PopBack() 
 	{
-		if (m_nUsed >= 0)
-			return m_NullValue;
+		/*if (m_nUsed >= 0)
+			return m_NullValue;*/
 
 		--m_nUsed;
 		return m_pData[m_nUsed];
@@ -89,8 +91,8 @@ public:
 
 	T PopFront()
 	{
-		if (m_nUsed >= 0)
-			return m_NullValue;
+		/*if (m_nUsed >= 0)
+			return m_NullValue;*/
 		return Remove(0);
 	}
 
@@ -105,11 +107,13 @@ public:
 		if (nCapacity <= 0)
 			nCapacity = 1;
 
-		T* newData = new T[m_nCapacity];
-		memcpy(newData, m_pData, sizeof(T) * m_nCapacity);
+		
+		T* newData = new T[m_nUsed];
+		memcpy(newData, m_pData, sizeof(T) * m_nUsed);
 		delete m_pData;
+
 		m_pData = newData;
-		m_nCapacity = nCapacity;
+		m_nCapacity *= 2;
 	}
 
 	T& operator[] (const int index)
@@ -161,8 +165,9 @@ private:
 	{
 		// creates new array that is twice as big
 		T* NewData = new T[m_nCapacity * 2];
+		_ASSERT(NewData);
 		// copy old data across into new array
-		memcpy(NewData, m_pData, sizeof(T) * m_nCapacity);
+		memcpy(NewData, m_pData, sizeof(T) * m_nUsed);
 		// delete old data
 		delete m_pData;
 		// make sure our pointers still work

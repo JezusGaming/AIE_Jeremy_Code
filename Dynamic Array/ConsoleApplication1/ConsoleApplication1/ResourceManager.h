@@ -1,7 +1,8 @@
 #pragma once
 #include "DynamicArray.h"
 #include "Resource.h"
-#include "string.h"
+#include <string.h>
+#include <crtdbg.h>
 
 template<typename T>
 class ResourceManager
