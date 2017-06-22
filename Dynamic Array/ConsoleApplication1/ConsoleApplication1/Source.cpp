@@ -129,7 +129,7 @@ void main()
 
 	cout << "Top" << MyStack.Top() << endl;
 
-	cout << "Everything looks good. Should Shrink double the dynamic array size?" << endl;
+	cout << "Everything looks good...?" << endl;
 
 	system("pause");
 }
