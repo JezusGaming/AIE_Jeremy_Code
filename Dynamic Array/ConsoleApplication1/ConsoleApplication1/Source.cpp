@@ -80,7 +80,7 @@ void main()
 	cout << endl;
 
 	//Object Pool Example
-	/*ObjectPool pool(50);
+	/*ObjectPool pool(50); 
 	Entity* p = pool.Allocate();
 	pool.Deallocate(p);*/
 
@@ -116,7 +116,6 @@ void main()
 	{
 		cout << MyStack[i] << endl;
 	}
-
 	cout << "Top" << MyStack.Top() << endl;
 
 	MyStack.PushBack(4);

@@ -66,8 +66,8 @@ public:
 
 	T PopBack() 
 	{
-		/*if (m_nUsed >= 0)
-			return m_NullValue;*/
+		if (m_nUsed < 0)
+			return m_NullValue;
 
 		--m_nUsed;
 		return m_pData[m_nUsed];
@@ -91,8 +91,8 @@ public:
 
 	T PopFront()
 	{
-		/*if (m_nUsed >= 0)
-			return m_NullValue;*/
+		if (m_nUsed < 0)
+			return m_NullValue;
 		return Remove(0);
 	}
 
