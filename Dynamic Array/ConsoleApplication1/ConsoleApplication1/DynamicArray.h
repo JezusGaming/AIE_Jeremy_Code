@@ -113,7 +113,7 @@ public:
 		delete m_pData;
 
 		m_pData = newData;
-		m_nCapacity *= 2;
+		m_nCapacity = m_nUsed;
 	}
 
 	T& operator[] (const int index)
